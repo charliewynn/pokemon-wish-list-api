@@ -4,7 +4,8 @@ import { success, failure } from "./libs/response-lib";
 export async function main(event, context) {
 	const TableName = "pokemon-wish-list";
 	const userid = event.requestContext.identity.cognitoIdentityId;
-	const pokemonid = event.body;
+	const pokemonid = parseInt(event.body);
+	console.log("want", event);
 
 	const getParams = {
 		TableName,
@@ -13,6 +14,7 @@ export async function main(event, context) {
 			pokemonid
 		}
 	};
+	console.log("params", getParams);
 
 	try {
 		const queryResults = await dynamoDbLib.call("get", getParams);

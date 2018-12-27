@@ -13,6 +13,6 @@ function buildResponse(statusCode, body) {
 			"Access-Control-Allow-Origin": "*",
 			"Access-Control-Allow-Credentials": true
 		},
-		body
+		body: JSON.stringify(body)
 	};
 }

@@ -19,6 +19,7 @@ export async function main(event, context) {
 
 		return success(queryResults);
 	} catch (e) {
+		console.log("failed", e);
 		return failure({ status: false, error: e });
 	}
 }

@@ -4,7 +4,7 @@ import { success, failure } from "./libs/response-lib";
 export async function main(event, context) {
 	const TableName = "pokemon-wish-list";
 	const userid = event.requestContext.identity.cognitoIdentityId;
-	const pokemonid = event.body;
+	const pokemonid = parseInt(event.body);
 
 	const getParams = {
 		TableName,
@@ -18,15 +18,10 @@ export async function main(event, context) {
 		const queryResults = await dynamoDbLib.call("get", getParams);
 		console.log("query", queryResults);
 		let created = Date.now();
-		if (!queryResults.Item) {
-			return failure({
-				status: false,
-				error: "You didn't want this pokemon anyways"
-			});
-		}
+
 		const wanted = queryResults.Item.wanted - 1;
 		created = queryResults.Item.created;
-		if (wanted === 0) {
+		if (wanted <= 0) {
 			await dynamoDbLib.call("delete", getParams);
 			return success({ status: true, pokemon: null });
 		}
